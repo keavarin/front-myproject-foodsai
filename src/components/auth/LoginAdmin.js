@@ -16,12 +16,12 @@ import {
 
 function LoginAdmin() {
   const [show, setShow] = React.useState(false);
-  const { setIsAdmin, setRole, role } = useContext(AuthContext);
+  const { setIsAdmin, setRole, role, isAdmin } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
   const history = useHistory();
-
+  console.log(isAdmin);
   const validateInput = () => {
     const newError = {};
     if (!email) newError.email = "email is required";

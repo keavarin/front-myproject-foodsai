@@ -18,6 +18,7 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { OrderContext } from "../../contexts/OrderContextProvider";
+import { AuthContext } from "../../contexts/AuthContextProvider";
 import Step from "./Step";
 
 function CancelOrderModal({ cancelOrder, handlerCancelOrder }) {
@@ -54,19 +55,25 @@ function OrderTracking() {
   const [show, setShow] = useState(false);
   const [error, setError] = useState({});
   const [orderTrack, setOrderTrack] = useState({ orderTracking: "" });
-  const { orderTrackData, setOrderTrackData, role } = useContext(OrderContext);
+  const { orderTrackData, setOrderTrackData } = useContext(OrderContext);
+  const { role } = useContext(AuthContext);
   const history = useHistory();
-
-  console.log(orderTrackData);
+  console.log(role);
+  console.log(orderTrack);
+  console.log(orderTrackData.orderTracking);
   const validateInput = () => {
     const newError = {};
 
     if (!orderTrack.orderTracking)
       newError.orderTrack = "orderTack is required";
 
-    if (orderTrack.orderTracking !== orderTrackData.orderTracking)
-      newError.orderTrack = "orderTack invalid";
-    // if (!password) newError.password = "password is required";
+    // if (orderTrack.orderTracking !== orderTrackData.orderTracking)
+    //   newError.orderTrack = "orderTack invalid";
+    if (
+      orderTrackData.orderTracking === null ||
+      orderTrackData.orderTracking === undefined
+    )
+      newError.orderTrack = "ไม่มีเลขที่ orderนี้";
 
     setError(newError);
   };
@@ -78,11 +85,12 @@ function OrderTracking() {
   const handlerSubmitFindOrder = async (e) => {
     const { orderTracking } = orderTrack;
     e.preventDefault();
+    validateInput();
     axios
       .get(`/order/${orderTracking}`)
       .then((res) => {
         setOrderTrackData(res.data.order);
-        history.push("/findorder");
+
         if (res.data.order === null) setShow(false);
         if (res.data.order !== null) setShow(true);
         if (res.data.order.status === "ORDERCANCEL") setShow(false);
@@ -105,7 +113,6 @@ function OrderTracking() {
       })
       .then((res) => {
         console.log(res.data.order);
-        history.push("/findorder");
         if (res.data.order === null) setShow(false);
         if (res.data.order !== null) setShow(true);
       })
@@ -125,7 +132,7 @@ function OrderTracking() {
         status: "ORDERCONFIRM",
       })
       .then((res) => {
-        console.log(res.data.order);
+        console.log(res.data);
         // history.push("/findorder");
         // if (res.data.order === null) setShow(false);
         // if (res.data.order !== null) setShow(true);
@@ -146,7 +153,7 @@ function OrderTracking() {
         status: "ORDERONPROCESS",
       })
       .then((res) => {
-        console.log(res.data.order);
+        console.log(res.data);
         // history.push("/findorder");
         // if (res.data.order === null) setShow(false);
         // if (res.data.order !== null) setShow(true);
@@ -167,7 +174,7 @@ function OrderTracking() {
         status: "ONTHEWAY",
       })
       .then((res) => {
-        console.log(res.data.order);
+        console.log(res.data);
         // history.push("/findorder");
         // if (res.data.order === null) setShow(false);
         // if (res.data.order !== null) setShow(true);
@@ -277,7 +284,7 @@ function OrderTracking() {
         handlerCancelOrder={handlerCancelOrder}
       />
       {role === "admin" ? (
-        <ButtonGroup>
+        <>
           <Button onClick={(e) => handlerConfirmOrder(e)}>
             update order confirm
           </Button>
@@ -290,7 +297,7 @@ function OrderTracking() {
           <Button onClick={(e) => handlerArriveOrder(e)}>
             update order arrive
           </Button>
-        </ButtonGroup>
+        </>
       ) : null}
     </>
   );

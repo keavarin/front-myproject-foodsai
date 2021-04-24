@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "../../config/axios";
 import { OrderContext } from "../../contexts/OrderContextProvider";
 import { AuthContext } from "../../contexts/AuthContextProvider";
@@ -48,6 +49,7 @@ function MenuCard({ menu }) {
   const { role } = useContext(AuthContext);
   const [error, setError] = useState({});
   const [updatePrice, setUpdatePrice] = useState("");
+  const history = useHistory();
   console.log(menu);
   console.log(updatePrice);
 
@@ -129,6 +131,9 @@ function MenuCard({ menu }) {
 
             <Button onClick={(e) => handlerMenuUpdateActive(e)}>
               Update Product Status ACTIVE
+            </Button>
+            <Button onClick={() => history.push("/findorder")}>
+              go to update status order
             </Button>
           </>
         ) : (

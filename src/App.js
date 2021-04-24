@@ -12,6 +12,7 @@ import OrderSummaryPage from "./pages/OrderSummaryPage";
 import OrderNumberPage from "./pages/OrderNumberPage";
 import GetCouponPage from "./pages/GetCouponPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
+import AdminOrderTrackingPage from "./pages/AdminOrderTrackingPage";
 
 const privateRoutes = [
   {
@@ -31,7 +32,24 @@ const privateRoutes = [
     component: GetCouponPage,
   },
 ];
-// const adminRoutes = [{}];
+const adminRoutes = [
+  // {
+  //   path: "/admin/ordersummary",
+  //   component: OrderSummaryPage,
+  // },
+  {
+    path: "/findorder",
+    component: OrderTrackingPage,
+  },
+  {
+    path: "/adminfindorder",
+    component: AdminOrderTrackingPage,
+  },
+  // {
+  //   path: "/admin/getcoupon",
+  //   component: GetCouponPage,
+  // },
+];
 
 const publicRoutes = [
   {
@@ -59,18 +77,19 @@ function App() {
   //const [isAuthenticated, setIsAuthenticated]= useState(localStorageService.getToken());
   return (
     <Switch>
-      {isAdmin &&
-        privateRoutes.map((el, index) => (
-          <Route key={index} exact path={el.path} component={el.component} />
-        ))}
-      {publicRoutes.map((el, index) => (
-        <Route key={index} exact path={el.path} component={el.component} />
-      ))}
-
       {isAuthenticated &&
         privateRoutes.map((el, index) => (
           <Route key={index} exact path={el.path} component={el.component} />
         ))}
+
+      {isAdmin &&
+        adminRoutes.map((el, index) => (
+          <Route key={index} exact path={el.path} component={el.component} />
+        ))}
+
+      {publicRoutes.map((el, index) => (
+        <Route key={index} exact path={el.path} component={el.component} />
+      ))}
 
       <Redirect to="/login" />
     </Switch>

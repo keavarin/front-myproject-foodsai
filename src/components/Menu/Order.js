@@ -66,7 +66,6 @@ function Order() {
           </Box>
         )}
       </Grid>
-      {/* </Flex> */}
     </>
   );
 }
