@@ -4,27 +4,7 @@ import localStorageService from "../services/localStorageService";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContextProvider";
 import { OrderContext } from "../contexts/OrderContextProvider";
-import {
-  Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  Text,
-  FormControl,
-  FormLabel,
-  Input,
-  useDisclosure,
-  Radio,
-  RadioGroup,
-  Stack,
-  Flex,
-  Image,
-} from "@chakra-ui/react";
+import { Box, Flex, Image } from "@chakra-ui/react";
 import Navbar from "../components/layout/Navbar";
 import OrderNumber from "../components/layout/OrderNumber";
 

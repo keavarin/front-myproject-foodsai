@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import axios from "../../config/axios";
 import { OrderContext } from "../../contexts/OrderContextProvider";
+import { AuthContext } from "../../contexts/AuthContextProvider";
 import {
   Box,
   Image,
@@ -12,6 +14,8 @@ import {
   NumberDecrementStepper,
   MenuIcon,
   Grid,
+  ButtonGroup,
+  Input,
 } from "@chakra-ui/react";
 import Order from "./OrderItem";
 
@@ -41,6 +45,11 @@ function SliderInput({ value, setValue }) {
 function MenuCard({ menu }) {
   const [value, setValue] = useState(0);
   const { orders, setOrders } = useContext(OrderContext);
+  const { role } = useContext(AuthContext);
+  const [error, setError] = useState({});
+  const [updatePrice, setUpdatePrice] = useState("");
+  console.log(menu);
+  console.log(updatePrice);
 
   const onAddMenu = (menu) => {
     const index = orders.findIndex((order) => order.id === menu.id);
@@ -52,6 +61,48 @@ function MenuCard({ menu }) {
       setOrders(newOrder);
     }
   };
+
+  const handlerMenuUpdateNonActive = async (e) => {
+    const { id } = menu;
+    console.log(menu);
+    e.preventDefault();
+    axios
+      .put(`/product/updateproduct/${id}`, {
+        price: updatePrice ? updatePrice : menu.price,
+        status: (menu.status = "NONACTIVE"),
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError({ server: err.response.data.message });
+        } else {
+          setError({ front: err.message });
+        }
+      });
+  };
+
+  const handlerMenuUpdateActive = async (e) => {
+    const { id } = menu;
+    console.log(menu);
+    e.preventDefault();
+    axios
+      .put(`/product/updateproduct/${id}`, {
+        price: updatePrice ? updatePrice : menu.price,
+        status: (menu.status = "ACTIVE"),
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError({ server: err.response.data.message });
+        } else {
+          setError({ front: err.message });
+        }
+      });
+  };
   return (
     <Grid templateColumns="repeat(1, 1fr)" gap={2} key={menu.id}>
       <Box p={1} shadow="sm" borderWidth="1px">
@@ -61,9 +112,32 @@ function MenuCard({ menu }) {
           {menu.name}
         </Box>
         <SliderInput menu={menu} value={value} setValue={setValue} />
-        <Button onClick={() => onAddMenu({ ...menu, amount: value })}>
-          {menu.price} บาท
-        </Button>
+
+        {role === "admin" ? (
+          <>
+            <Input
+              placeholder="update price"
+              name="price"
+              value={updatePrice}
+              onChange={(e) => {
+                setUpdatePrice(e.target.value);
+              }}
+            ></Input>
+            <Button onClick={(e) => handlerMenuUpdateNonActive(e)}>
+              Update Product Status NONACTIVE
+            </Button>
+
+            <Button onClick={(e) => handlerMenuUpdateActive(e)}>
+              Update Product Status ACTIVE
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={() => onAddMenu({ ...menu, amount: value })}>
+              {menu.price} บาท
+            </Button>
+          </>
+        )}
       </Box>
     </Grid>
   );

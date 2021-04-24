@@ -1,22 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "../../config/axios";
+import { AuthContext } from "../../contexts/AuthContextProvider";
 import { OrderContext } from "../../contexts/OrderContextProvider";
-import {
-  Box,
-  Image,
-  Button,
-  SimpleGrid,
-  Flex,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-} from "@chakra-ui/react";
+import { Box, Image, Button, SimpleGrid } from "@chakra-ui/react";
 import MenuCard from "./MenuCard";
 
 function MenuList({ value, setValue }) {
   const [menuList, setMenuList] = useState([]);
+  const { setRole, role, isAuthenticated, isAdmin } = useContext(AuthContext);
 
   const fetchMenuList = async () => {
     try {
@@ -31,9 +22,11 @@ function MenuList({ value, setValue }) {
 
   return (
     <SimpleGrid columns={2} spacing={2}>
-      {menuList.map((menu) =>
-        menu.status === "ACTIVE" ? <MenuCard menu={menu} /> : null
-      )}
+      {isAuthenticated &&
+        menuList.map((menu) =>
+          menu.status === "ACTIVE" ? <MenuCard menu={menu} /> : null
+        )}
+      {isAdmin && menuList.map((menu) => <MenuCard menu={menu} />)}
     </SimpleGrid>
   );
 }

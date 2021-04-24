@@ -15,6 +15,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { OrderContext } from "../../contexts/OrderContextProvider";
 import Step from "./Step";
@@ -53,7 +54,7 @@ function OrderTracking() {
   const [show, setShow] = useState(false);
   const [error, setError] = useState({});
   const [orderTrack, setOrderTrack] = useState({ orderTracking: "" });
-  const { orderTrackData, setOrderTrackData } = useContext(OrderContext);
+  const { orderTrackData, setOrderTrackData, role } = useContext(OrderContext);
   const history = useHistory();
 
   console.log(orderTrackData);
@@ -107,6 +108,90 @@ function OrderTracking() {
         history.push("/findorder");
         if (res.data.order === null) setShow(false);
         if (res.data.order !== null) setShow(true);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError({ server: err.response.data.message });
+        } else {
+          setError({ front: err.message });
+        }
+      });
+  };
+  const handlerConfirmOrder = async (e) => {
+    const { orderTracking } = orderTrack;
+    e.preventDefault();
+    axios
+      .put(`/order/statusorder/${orderTracking}`, {
+        status: "ORDERCONFIRM",
+      })
+      .then((res) => {
+        console.log(res.data.order);
+        // history.push("/findorder");
+        // if (res.data.order === null) setShow(false);
+        // if (res.data.order !== null) setShow(true);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError({ server: err.response.data.message });
+        } else {
+          setError({ front: err.message });
+        }
+      });
+  };
+  const handlerOnProcessOrder = async (e) => {
+    const { orderTracking } = orderTrack;
+    e.preventDefault();
+    axios
+      .put(`/order/statusorder/${orderTracking}`, {
+        status: "ORDERONPROCESS",
+      })
+      .then((res) => {
+        console.log(res.data.order);
+        // history.push("/findorder");
+        // if (res.data.order === null) setShow(false);
+        // if (res.data.order !== null) setShow(true);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError({ server: err.response.data.message });
+        } else {
+          setError({ front: err.message });
+        }
+      });
+  };
+  const handlerOnDeliveryOrder = async (e) => {
+    const { orderTracking } = orderTrack;
+    e.preventDefault();
+    axios
+      .put(`/order/statusorder/${orderTracking}`, {
+        status: "ONTHEWAY",
+      })
+      .then((res) => {
+        console.log(res.data.order);
+        // history.push("/findorder");
+        // if (res.data.order === null) setShow(false);
+        // if (res.data.order !== null) setShow(true);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError({ server: err.response.data.message });
+        } else {
+          setError({ front: err.message });
+        }
+      });
+  };
+  const handlerArriveOrder = async (e) => {
+    const { orderTracking } = orderTrack;
+    e.preventDefault();
+    axios
+      .put(`/order/statusorder/${orderTracking}`, {
+        status: "ARRIVE",
+      })
+      .then((res) => {
+        console.log(res.data.order);
+        // history.push("/findorder");
+        // if (res.data.order === null) setShow(false);
+        // if (res.data.order !== null) setShow(true);
       })
       .catch((err) => {
         if (err.response) {
@@ -191,6 +276,22 @@ function OrderTracking() {
         cancelOrder={cancelOrder}
         handlerCancelOrder={handlerCancelOrder}
       />
+      {role === "admin" ? (
+        <ButtonGroup>
+          <Button onClick={(e) => handlerConfirmOrder(e)}>
+            update order confirm
+          </Button>
+          <Button onClick={(e) => handlerOnProcessOrder(e)}>
+            update order on process
+          </Button>
+          <Button onClick={(e) => handlerOnDeliveryOrder(e)}>
+            update order delivery
+          </Button>
+          <Button onClick={(e) => handlerArriveOrder(e)}>
+            update order arrive
+          </Button>
+        </ButtonGroup>
+      ) : null}
     </>
   );
 }

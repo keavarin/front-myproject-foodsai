@@ -7,6 +7,7 @@ function AuthContextProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorageService.getToken()
   );
+  const [isAdmin, setIsAdmin] = useState(localStorageService.getToken());
   const [role, setRole] = useState("");
   const [user, setUser] = useState({});
 
@@ -19,6 +20,8 @@ function AuthContextProvider({ children }) {
         setUser,
         role,
         setRole,
+        isAdmin,
+        setIsAdmin,
       }}
     >
       {children}
