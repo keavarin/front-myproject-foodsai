@@ -24,7 +24,6 @@ import {
   FormLabel,
   Input,
   Avatar,
-  Stack,
 } from "@chakra-ui/react";
 
 import { useDisclosure } from "@chakra-ui/react";
@@ -32,7 +31,7 @@ import SignIn from "./SingIn";
 import OrderHistory from "./OrderHistory";
 import { OrderContext } from "../../contexts/OrderContextProvider";
 
-export const CustomModal = ({
+const CustomModal = ({
   updateCustomerModal,
   modalHeader,
   customerData,
@@ -288,6 +287,7 @@ function Navbar() {
         }
       });
   };
+
   const validateInput = ({ customerData }) => {
     const {
       firstName,
@@ -389,12 +389,11 @@ function Navbar() {
                 Find Order
               </MenuItem>
               <MenuItem
-                onClick={(e) => {
-                  handlerSubmitFindOrder(e);
-                  handleOpenModal(lastOrderModal);
+                onClick={() => {
+                  history.push("/admincreateproduct");
                 }}
               >
-                Order History
+                Create Product
               </MenuItem>
 
               <MenuItem onClick={handleLogout}>Log out</MenuItem>

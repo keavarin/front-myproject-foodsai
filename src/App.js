@@ -12,8 +12,7 @@ import OrderSummaryPage from "./pages/OrderSummaryPage";
 import OrderNumberPage from "./pages/OrderNumberPage";
 import GetCouponPage from "./pages/GetCouponPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
-import AdminOrderTrackingPage from "./pages/AdminOrderTrackingPage";
-
+import AdminCreateProductPage from "./pages/AdminCreateProductPage";
 const privateRoutes = [
   {
     path: "/ordersummary",
@@ -42,13 +41,9 @@ const adminRoutes = [
     component: OrderTrackingPage,
   },
   {
-    path: "/adminfindorder",
-    component: AdminOrderTrackingPage,
+    path: "/admincreateproduct",
+    component: AdminCreateProductPage,
   },
-  // {
-  //   path: "/admin/getcoupon",
-  //   component: GetCouponPage,
-  // },
 ];
 
 const publicRoutes = [
