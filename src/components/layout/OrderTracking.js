@@ -55,25 +55,25 @@ function OrderTracking() {
   const [show, setShow] = useState(false);
   const [error, setError] = useState({});
   const [orderTrack, setOrderTrack] = useState({ orderTracking: "" });
-  const { orderTrackData, setOrderTrackData } = useContext(OrderContext);
+  const { orderTrackData, setOrderTrackData, orders } = useContext(
+    OrderContext
+  );
   const { role } = useContext(AuthContext);
   const history = useHistory();
+  console.log(error);
+  console.log(orders);
   console.log(role);
   console.log(orderTrack);
+  console.log(orderTrackData);
   console.log(orderTrackData.orderTracking);
   const validateInput = () => {
     const newError = {};
 
-    if (!orderTrack.orderTracking)
-      newError.orderTrack = "orderTack is required";
-
-    // if (orderTrack.orderTracking !== orderTrackData.orderTracking)
-    //   newError.orderTrack = "orderTack invalid";
     if (
-      orderTrackData.orderTracking === null ||
-      orderTrackData.orderTracking === undefined
+      orderTrack.orderTracking === undefined ||
+      orderTrack.orderTracking === null
     )
-      newError.orderTrack = "ไม่มีเลขที่ orderนี้";
+      newError.orderTrack = "กรุณากรอกเลขที่ order";
 
     setError(newError);
   };
@@ -90,10 +90,12 @@ function OrderTracking() {
       .get(`/order/${orderTracking}`)
       .then((res) => {
         setOrderTrackData(res.data.order);
-
         if (res.data.order === null) setShow(false);
         if (res.data.order !== null) setShow(true);
         if (res.data.order.status === "ORDERCANCEL") setShow(false);
+        // if (res.data.order.status === "ORDERONPROCESS") setShow(false);
+        // if (res.data.order.status === "ONTHEWAY") setShow(false);
+        // if (res.data.order.status === "ARRIVE") setShow(false);
       })
       .catch((err) => {
         if (err.response) {
@@ -208,6 +210,28 @@ function OrderTracking() {
         }
       });
   };
+  const handlerUpdatePayment = async (e) => {
+    const { paymentId } = orderTrackData;
+    e.preventDefault();
+    axios
+      .put(`/payment/statuspayment/${paymentId}`, {
+        status: "TRUE",
+      })
+      .then((res) => {
+        console.log(res);
+        handlerConfirmOrder(e);
+        // history.push("/findorder");
+        // if (res.data.order === null) setShow(false);
+        // if (res.data.order !== null) setShow(true);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError({ server: err.response.data.message });
+        } else {
+          setError({ front: err.message });
+        }
+      });
+  };
 
   const cancelOrder = useDisclosure();
 
@@ -230,14 +254,21 @@ function OrderTracking() {
               onChange={handleFindOrder}
             />
             {error.orderTrack && <Box color={"red"}>{error.orderTrack}</Box>}
+            {error.server && <Box color={"red"}>{error.server}</Box>}
             <Button size="sm" m={2} onClick={handlerSubmitFindOrder}>
               ค้นหา
             </Button>
           </Box>
         ))}
-        {orderTrackData.status === "ORDERCANCEL" ? (
+        {orderTrackData.status === "ORDERCANCEL" ||
+        orderTrackData.status === "ORDERONPROCESS" ||
+        orderTrackData.status === "ORDERCONFIRM" ||
+        orderTrackData.status === "ONTHEWAY" ||
+        orderTrackData.status === "ARRIVE" ? (
           <>
-            <Box>Order ถูกยกเลิกแล้ว</Box>
+            {orderTrackData.status === "ORDERCANCEL" ? (
+              <Box>Order ถูกยกเลิกแล้ว</Box>
+            ) : null}
           </>
         ) : (
           <Button
@@ -285,9 +316,9 @@ function OrderTracking() {
       />
       {role === "admin" ? (
         <>
-          <Button onClick={(e) => handlerConfirmOrder(e)}>
+          {/* <Button onClick={(e) => handlerConfirmOrder(e)}>
             update order confirm
-          </Button>
+          </Button> */}
           <Button onClick={(e) => handlerOnProcessOrder(e)}>
             update order on process
           </Button>
@@ -297,6 +328,11 @@ function OrderTracking() {
           <Button onClick={(e) => handlerArriveOrder(e)}>
             update order arrive
           </Button>
+          {orderTrackData.status === "ORDERPLACE" ? (
+            <Button onClick={(e) => handlerUpdatePayment(e)}>
+              update payment TRUE
+            </Button>
+          ) : null}
         </>
       ) : null}
     </>

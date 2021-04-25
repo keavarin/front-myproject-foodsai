@@ -168,9 +168,17 @@ const LastOrderModal = ({ lastOrderModal, reset, onClear }) => {
 };
 
 function Navbar() {
-  const { isAuthenticated, setIsAuthenticated, user, setUser } = useContext(
-    AuthContext
-  );
+  const {
+    isAuthenticated,
+    setIsAuthenticated,
+    user,
+    setUser,
+    isAdmin,
+    setIsAdmin,
+    admin,
+    setAdmin,
+    role,
+  } = useContext(AuthContext);
   const { historyOrder, setHistoryOrder } = useContext(OrderContext);
   const [error, setError] = useState({});
   const history = useHistory();
@@ -188,6 +196,16 @@ function Navbar() {
       } catch {}
     };
     getCustomer();
+  }, []);
+
+  useEffect(() => {
+    const getAdmin = async () => {
+      try {
+        const res = await axios.get("/admin/");
+        setAdmin(res.data.admin);
+      } catch {}
+    };
+    getAdmin();
   }, []);
 
   const [customerData, setCustomerData] = useState({
@@ -340,7 +358,7 @@ function Navbar() {
     e.preventDefault();
 
     localStorageService.clearToken();
-    setIsAuthenticated(false);
+    role === "admin" ? setIsAdmin(false) : setIsAuthenticated(false);
     history.push("/login");
   };
 
@@ -360,6 +378,29 @@ function Navbar() {
           <Box onClick={() => history.push("./")}>FOODSAI</Box>
           <Image src="/favicon.ico" w={8} />
         </Flex>
+
+        {isAdmin && (
+          <Menu>
+            <MenuButton>
+              <Avatar name={`${admin.email} `} />
+            </MenuButton>
+            <MenuList color="black">
+              <MenuItem onClick={() => history.push("/findorder")}>
+                Find Order
+              </MenuItem>
+              <MenuItem
+                onClick={(e) => {
+                  handlerSubmitFindOrder(e);
+                  handleOpenModal(lastOrderModal);
+                }}
+              >
+                Order History
+              </MenuItem>
+
+              <MenuItem onClick={handleLogout}>Log out</MenuItem>
+            </MenuList>
+          </Menu>
+        )}
         {!isAuthenticated && <SignIn />}
         {isAuthenticated && (
           <Menu>
