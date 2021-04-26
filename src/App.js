@@ -1,6 +1,4 @@
 import { Route, Switch, Redirect } from "react-router-dom";
-//import Header from './components/layout/Header';
-//import Home from './pages/Home';
 import { useContext } from "react";
 import { AuthContext } from "./contexts/AuthContextProvider";
 import Home from "./pages/Home";
@@ -10,7 +8,6 @@ import OrderPage from "./pages/OrderPage";
 import OrderTrackingPage from "./pages/OrderTrackingPage";
 import OrderSummaryPage from "./pages/OrderSummaryPage";
 import OrderNumberPage from "./pages/OrderNumberPage";
-import GetCouponPage from "./pages/GetCouponPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminCreateProductPage from "./pages/AdminCreateProductPage";
 const privateRoutes = [
@@ -25,10 +22,6 @@ const privateRoutes = [
   {
     path: "/numberorder",
     component: OrderNumberPage,
-  },
-  {
-    path: "/getcoupon",
-    component: GetCouponPage,
   },
 ];
 const adminRoutes = [

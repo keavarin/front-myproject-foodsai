@@ -261,7 +261,10 @@ function OrderSummaryPage() {
       .then((res) => {
         setTrackNumber(res.data.orders);
         setOr_id(res.data.orders.id);
+        setCoupon(res.data.coupon);
 
+        console.log(res.data.coupon);
+        console.log(res.data);
         // history.push("/ordersummary");
       })
       .catch((err) => {
@@ -352,7 +355,7 @@ function OrderSummaryPage() {
               value={couponCode}
               onChange={(e) => setCouponCode(e.target.value)}
             />
-            {couponCode === coupon.code ? (
+            {couponCode === coupon.code && coupon.status === "TRUE" ? (
               <Text color="green">correct !</Text>
             ) : (
               <Text color="red">invalid code</Text>
