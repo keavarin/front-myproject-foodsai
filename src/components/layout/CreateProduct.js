@@ -79,7 +79,7 @@ function CreateProduct() {
           />
           <Button onClick={(e) => handlerSubmitCreateProduct(e)}>SUBMIT</Button>
         </FormControl>
-        {productImg && <Image src="productImg" />}
+        {/* {productImg && <Image src="productImg" />} */}
       </Flex>
     </>
   );

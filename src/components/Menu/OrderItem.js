@@ -1,7 +1,5 @@
 import React, { useState, useContext } from "react";
 import {
-  Box,
-  Button,
   Flex,
   Icon,
   List,
@@ -10,7 +8,6 @@ import {
   OrderedList,
   UnorderedList,
 } from "@chakra-ui/react";
-import { OrderContext } from "../../contexts/OrderContextProvider";
 
 import { DeleteIcon } from "@chakra-ui/icons";
 function OrderItem({ order, deleteItem }) {

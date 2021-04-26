@@ -139,7 +139,10 @@ function OrderSummaryPage() {
     trackNumber,
     setTrackNumber,
     coupon,
+    setCoupon,
   } = useContext(OrderContext);
+  console.log(coupon.status);
+  console.log(coupon.code);
   const history = useHistory();
 
   const [error, setError] = useState({});
