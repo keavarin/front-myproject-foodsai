@@ -10,6 +10,8 @@ import OrderSummaryPage from "./pages/OrderSummaryPage";
 import OrderNumberPage from "./pages/OrderNumberPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminCreateProductPage from "./pages/AdminCreateProductPage";
+import { OrderContext } from "./contexts/OrderContextProvider";
+
 const privateRoutes = [
   {
     path: "/ordersummary",
@@ -62,12 +64,20 @@ const publicRoutes = [
 
 function App() {
   const { isAuthenticated, isAdmin, role } = useContext(AuthContext);
+
   //const [isAuthenticated, setIsAuthenticated]= useState(localStorageService.getToken());
   return (
     <Switch>
       {isAuthenticated &&
         privateRoutes.map((el, index) => (
-          <Route key={index} exact path={el.path} component={el.component} />
+          <Route
+            key={index}
+            exact
+            path={el.path}
+            component={el.component}
+            // coupon={coupon}
+            // setCoupon={setCoupon}
+          />
         ))}
 
       {isAdmin &&

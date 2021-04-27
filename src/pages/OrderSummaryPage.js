@@ -26,7 +26,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 
-export const CustomModal = ({
+const CustomModal = ({
   customerOrderDataModal,
   modalHeader,
   customerOrderData,
@@ -81,7 +81,7 @@ export const CustomModal = ({
   );
 };
 
-export const PaymentModal = ({
+const PaymentModal = ({
   modalHeader,
   paymentDataModal,
   paymentData,
@@ -141,6 +141,7 @@ function OrderSummaryPage() {
     coupon,
     setCoupon,
   } = useContext(OrderContext);
+  console.log(coupon);
   console.log(coupon.status);
   console.log(coupon.code);
   const history = useHistory();
@@ -230,8 +231,6 @@ function OrderSummaryPage() {
   const handlerSubmitCustomerData = async (e) => {
     const {
       status,
-      discount,
-      couponId,
       phoneNumberToOrder,
       houseNumberToOrder,
       roadToOrder,
@@ -265,7 +264,6 @@ function OrderSummaryPage() {
 
         console.log(res.data.coupon);
         console.log(res.data);
-        // history.push("/ordersummary");
       })
       .catch((err) => {
         if (err.response) {

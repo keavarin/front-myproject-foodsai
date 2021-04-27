@@ -8,9 +8,11 @@ function AuthContextProvider({ children }) {
     localStorageService.getToken()
   );
   const [isAdmin, setIsAdmin] = useState(localStorageService.getToken());
+  // const [auth, setAuth] = useState(localStorageService.getToken());
   const [role, setRole] = useState("");
   const [user, setUser] = useState({});
   const [admin, setAdmin] = useState({});
+  // console.log(`isAdmin`, auth);
 
   return (
     <AuthContext.Provider
@@ -23,6 +25,8 @@ function AuthContextProvider({ children }) {
         setRole,
         isAdmin,
         setIsAdmin,
+        // auth,
+        // setAuth,
         admin,
         setAdmin,
       }}

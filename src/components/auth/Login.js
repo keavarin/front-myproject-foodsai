@@ -16,9 +16,14 @@ import {
 
 function Login() {
   const [show, setShow] = React.useState(false);
-  const { setIsAuthenticated, user, setUser, setRole, role } = useContext(
-    AuthContext
-  );
+  const {
+    setIsAuthenticated,
+    user,
+    setUser,
+    setRole,
+    role,
+    setIsAdmin,
+  } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
@@ -44,6 +49,7 @@ function Login() {
       console.log(res.data.token);
       localStorageService.setToken(res.data.token);
       setIsAuthenticated(true);
+      setIsAdmin(false);
       setRole(res.data.role);
       history.push("/");
     } catch (err) {

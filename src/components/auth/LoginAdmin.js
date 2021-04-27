@@ -16,7 +16,9 @@ import {
 
 function LoginAdmin() {
   const [show, setShow] = React.useState(false);
-  const { setIsAdmin, setRole, role, isAdmin } = useContext(AuthContext);
+  const { setIsAdmin, setRole, role, isAdmin, setIsAuthenticated } = useContext(
+    AuthContext
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
@@ -41,6 +43,7 @@ function LoginAdmin() {
       });
       console.log(res.data.token);
       localStorageService.setToken(res.data.token);
+      setIsAuthenticated(false);
       setIsAdmin(true);
       setRole(res.data.role);
       history.push("/");
