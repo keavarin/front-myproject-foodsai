@@ -141,9 +141,11 @@ function OrderSummaryPage() {
     coupon,
     setCoupon,
   } = useContext(OrderContext);
+
   console.log(coupon);
   console.log(coupon.status);
   console.log(coupon.code);
+
   const history = useHistory();
 
   const [error, setError] = useState({});
