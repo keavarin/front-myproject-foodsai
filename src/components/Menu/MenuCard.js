@@ -46,7 +46,7 @@ function SliderInput({ value, setValue }) {
 function MenuCard({ menu }) {
   const [value, setValue] = useState(0);
   const { orders, setOrders } = useContext(OrderContext);
-  const { role } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   const [error, setError] = useState({});
   const [updatePrice, setUpdatePrice] = useState("");
   const history = useHistory();
@@ -115,7 +115,7 @@ function MenuCard({ menu }) {
         </Box>
         <SliderInput menu={menu} value={value} setValue={setValue} />
 
-        {role === "admin" ? (
+        {auth?.role === "admin" ? (
           <>
             <Input
               placeholder="update price"
@@ -138,7 +138,10 @@ function MenuCard({ menu }) {
           </>
         ) : (
           <>
-            <Button onClick={() => onAddMenu({ ...menu, amount: value })}>
+            <Button
+              onClick={() => onAddMenu({ ...menu, amount: value })}
+              disabled={value <= 0}
+            >
               {menu.price} บาท
             </Button>
           </>

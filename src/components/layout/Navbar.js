@@ -167,17 +167,8 @@ const LastOrderModal = ({ lastOrderModal, reset, onClear }) => {
 };
 
 function Navbar() {
-  const {
-    isAuthenticated,
-    setIsAuthenticated,
-    user,
-    setUser,
-    isAdmin,
-    setIsAdmin,
-    admin,
-    setAdmin,
-    role,
-  } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
+
   const { historyOrder, setHistoryOrder } = useContext(OrderContext);
   const [error, setError] = useState({});
   const history = useHistory();
@@ -187,25 +178,8 @@ function Navbar() {
   const lastOrderModal = useDisclosure();
   const [reset, setReset] = useState(true);
 
-  useEffect(() => {
-    const getCustomer = async () => {
-      try {
-        const res = await axios.get("/customer/me");
-        setUser(res.data.user);
-      } catch {}
-    };
-    getCustomer();
-  }, []);
-
-  useEffect(() => {
-    const getAdmin = async () => {
-      try {
-        const res = await axios.get("/admin/");
-        setAdmin(res.data.admin);
-      } catch {}
-    };
-    getAdmin();
-  }, []);
+  const isAuthenticated = auth?.role;
+  const isAdmin = auth?.role === "admin";
 
   const [customerData, setCustomerData] = useState({
     firstName: "",
@@ -358,7 +332,8 @@ function Navbar() {
     e.preventDefault();
 
     localStorageService.clearToken();
-    role === "admin" ? setIsAdmin(false) : setIsAuthenticated(false);
+    setAuth({});
+    // role === "admin" ? setIsAdmin(false) : setIsAuthenticated(false);
     history.push("/login");
   };
 
@@ -382,7 +357,7 @@ function Navbar() {
         {isAdmin && (
           <Menu>
             <MenuButton>
-              <Avatar name={`${admin.email} `} />
+              <Avatar name={`${auth.email} `} />
             </MenuButton>
             <MenuList color="black">
               <MenuItem onClick={() => history.push("/findorder")}>
@@ -404,7 +379,10 @@ function Navbar() {
         {isAuthenticated && (
           <Menu>
             <MenuButton>
-              <Avatar name={`${user.firstName} ${user.lastName}`} />
+              {/* <Avatar name={`${user.firstName} ${user.lastName}`} /> */}
+              {!isAdmin && (
+                <Avatar name={`${auth?.firstName} ${auth?.lastName}`} />
+              )}
             </MenuButton>
             <MenuList color="black">
               <MenuItem onClick={() => handleOpenModal(updateCustomerModal)}>

@@ -242,6 +242,7 @@ function OrderSummaryPage() {
     } = customerOrderData;
 
     e.preventDefault();
+    console.log("orderSumm submitted");
     axios
       .post("/order/", {
         status,
@@ -258,6 +259,7 @@ function OrderSummaryPage() {
         items: item,
       })
       .then((res) => {
+        console.log("resp", res.data);
         setTrackNumber(res.data.orders);
         setOr_id(res.data.orders.id);
         setCoupon(res.data.coupon);
@@ -277,6 +279,7 @@ function OrderSummaryPage() {
   const handlerSubmitPaymentData = async (e) => {
     const { paymentType } = paymentCustomerType;
     e.preventDefault();
+    console.log("submit payment orId", or_id);
     axios
       .post("/payment/createpayment", {
         paymentType,

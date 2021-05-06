@@ -13,6 +13,7 @@ import {
   Flex,
   Stack,
 } from "@chakra-ui/react";
+import jwtDecode from "jwt-decode";
 
 function Register() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -21,7 +22,7 @@ function Register() {
   const handleClick = () => setShowPassword(!showPassword);
   const handleClick2 = () => setShowConfirmPassword(!showConfirmPassword);
 
-  const { setIsAuthenticated } = useContext(AuthContext);
+  const { setAuth } = useContext(AuthContext);
   const history = useHistory();
   const [error, setError] = useState({});
 
@@ -53,16 +54,16 @@ function Register() {
         confirmPassword,
         phoneNumber,
       })
-      .then((res) => {
-        localStorageService.setToken(res.data.token);
-        setIsAuthenticated(true);
+      .then(({ data }) => {
+        localStorageService.setToken(data.token);
+        setAuth(jwtDecode(data.token));
         history.push("/");
       })
       .catch((err) => {
         if (err.response) {
           setError({ server: err.response.data.message });
         } else {
-          console.log(err.message);
+          console.error(err.message);
           setError({ front: err.message });
         }
       });

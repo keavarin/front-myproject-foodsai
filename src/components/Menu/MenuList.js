@@ -2,12 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "../../config/axios";
 import { AuthContext } from "../../contexts/AuthContextProvider";
 import { OrderContext } from "../../contexts/OrderContextProvider";
-import { Box, Image, Button, SimpleGrid } from "@chakra-ui/react";
+import { Box, Image, SimpleGrid } from "@chakra-ui/react";
 import MenuCard from "./MenuCard";
 
 function MenuList({ value, setValue }) {
   const [menuList, setMenuList] = useState([]);
-  const { setRole, role, isAuthenticated, isAdmin } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
+
+  const isAuthenticated = auth?.role;
+  const isAdmin = auth?.role === "admin";
 
   const fetchMenuList = async () => {
     try {

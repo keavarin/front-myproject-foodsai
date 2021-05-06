@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContextProvider";
@@ -16,14 +17,7 @@ import {
 
 function Login() {
   const [show, setShow] = React.useState(false);
-  const {
-    setIsAuthenticated,
-    user,
-    setUser,
-    setRole,
-    role,
-    setIsAdmin,
-  } = useContext(AuthContext);
+  const { setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
@@ -42,15 +36,15 @@ function Login() {
     try {
       e.preventDefault();
       validateInput();
-      const res = await axios.post("http://localhost:8080/login", {
+      const { data } = await axios.post("http://localhost:8080/login", {
         email,
         password,
       });
-      console.log(res.data.token);
-      localStorageService.setToken(res.data.token);
-      setIsAuthenticated(true);
-      setIsAdmin(false);
-      setRole(res.data.role);
+      setAuth(jwtDecode(data.token));
+      localStorageService.setToken(data.token);
+      // setIsAuthenticated(true);
+      // setIsAdmin(false);
+      // setRole(res.data.role);
       history.push("/");
     } catch (err) {
       console.dir(err);

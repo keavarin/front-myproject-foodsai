@@ -50,7 +50,7 @@ const publicRoutes = [
     path: "/login",
     component: LoginPage,
   },
-  { path: "/adminlogin", component: AdminLoginPage },
+  { path: "/loginadmin", component: AdminLoginPage },
 
   {
     path: "/register",
@@ -63,9 +63,11 @@ const publicRoutes = [
 ];
 
 function App() {
-  const { isAuthenticated, isAdmin, role } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
 
-  //const [isAuthenticated, setIsAuthenticated]= useState(localStorageService.getToken());
+  const isAuthenticated = auth?.role;
+  const isAdmin = auth?.role === "admin";
+
   return (
     <Switch>
       {isAuthenticated &&
