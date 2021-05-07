@@ -31,6 +31,7 @@ function CreateProduct() {
       .post(`/product/createproduct`, formData)
       .then((res) => {
         console.log(res.data.product);
+        alert("create success");
         // setProductImg(res.data.product.imgUrl);
       })
       .catch((err) => {

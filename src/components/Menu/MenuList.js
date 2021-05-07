@@ -9,7 +9,7 @@ function MenuList({ value, setValue }) {
   const [menuList, setMenuList] = useState([]);
   const { auth } = useContext(AuthContext);
 
-  const isAuthenticated = auth?.role;
+  const isAuthenticated = auth?.role === "customer";
   const isAdmin = auth?.role === "admin";
 
   const fetchMenuList = async () => {

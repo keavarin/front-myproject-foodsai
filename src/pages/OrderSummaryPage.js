@@ -143,10 +143,6 @@ function OrderSummaryPage() {
     setCoupon,
   } = useContext(OrderContext);
 
-  // console.log(coupon);
-  // console.log(coupon.status);
-  // console.log(coupon.code);
-
   const history = useHistory();
 
   const [error, setError] = useState({});
@@ -159,9 +155,7 @@ function OrderSummaryPage() {
   for (let order of arrOrder) {
     item.push({ productId: order.id, amount: order.amount });
   }
-  console.log(orders);
-  console.log(couponCode);
-  console.log(coupon.code);
+
   let totalPrice = orders.reduce((total, order) => {
     if (order.discount === undefined || order.discount === null)
       return total + order.price * order.amount;
@@ -263,11 +257,12 @@ function OrderSummaryPage() {
         provinceToOrder,
         postalCodeToOrder,
         villageToOrder,
+
         items: item,
       })
       .then((res) => {
         console.log("resp", res.data);
-        setTrackNumber(res.data.orders);
+        setTrackNumber(res.data.orders); //TrackNumber มีก้อนดาต้าordersอยู่
         setOr_id(res.data.orders.id);
         setCoupon(res.data.coupon);
 

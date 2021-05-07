@@ -13,12 +13,9 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  MenuIcon,
   Grid,
-  ButtonGroup,
   Input,
 } from "@chakra-ui/react";
-import Order from "./OrderItem";
 
 function SliderInput({ value, setValue }) {
   const handleChange = (value) => {
@@ -48,8 +45,36 @@ function MenuCard({ menu }) {
   const { orders, setOrders } = useContext(OrderContext);
   const { auth } = useContext(AuthContext);
   const [error, setError] = useState({});
+  const [file, setFile] = useState(null);
   const [updatePrice, setUpdatePrice] = useState("");
   const history = useHistory();
+
+  const handleFileChange = (e) => {
+    console.log(e);
+    setFile(e.target.files[0]);
+  };
+  const handlerMenuUpdatePicture = (e) => {
+    e.preventDefault();
+    const { id } = menu;
+    const formData = new FormData();
+
+    formData.append("imgUrl", file);
+
+    axios
+      .put(`/product/updateproduct/${id}`, formData)
+      .then((res) => {
+        console.log(res.data.product);
+        alert("update success");
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError({ server: err.response.data.message });
+        } else {
+          setError({ front: err.message });
+        }
+      });
+  };
+
   console.log(menu);
   console.log(updatePrice);
 
@@ -75,6 +100,7 @@ function MenuCard({ menu }) {
       })
       .then((res) => {
         console.log(res.data);
+        alert("change status success");
       })
       .catch((err) => {
         if (err.response) {
@@ -96,6 +122,7 @@ function MenuCard({ menu }) {
       })
       .then((res) => {
         console.log(res.data);
+        alert("change status success");
       })
       .catch((err) => {
         if (err.response) {
@@ -125,16 +152,27 @@ function MenuCard({ menu }) {
                 setUpdatePrice(e.target.value);
               }}
             ></Input>
-            <Button onClick={(e) => handlerMenuUpdateNonActive(e)}>
-              Update Product Status NONACTIVE
+            <Input
+              placeholder="imgUrl"
+              name="imgUrl"
+              type="file"
+              onChange={handleFileChange}
+            />
+            <Button onClick={(e) => handlerMenuUpdatePicture(e)}>
+              Update Picture
             </Button>
+            <div>
+              <Button onClick={(e) => handlerMenuUpdateNonActive(e)}>
+                Update Product Status NONACTIVE
+              </Button>
 
-            <Button onClick={(e) => handlerMenuUpdateActive(e)}>
-              Update Product Status ACTIVE
-            </Button>
-            <Button onClick={() => history.push("/findorder")}>
-              go to update status order
-            </Button>
+              <Button onClick={(e) => handlerMenuUpdateActive(e)}>
+                Update Product Status ACTIVE
+              </Button>
+              <Button onClick={() => history.push("/findorder")}>
+                go to update status order
+              </Button>
+            </div>
           </>
         ) : (
           <>

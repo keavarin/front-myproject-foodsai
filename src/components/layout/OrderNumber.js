@@ -27,6 +27,20 @@ function OrderNumber() {
   const history = useHistory();
 
   const orderDate = new Date(trackNumber.date);
+  let monthNames = [
+    "มกราคม",
+    "กุมภาพันธ์",
+    "มีนาคม",
+    "เมษายน",
+    "พฤษภาคม",
+    "มิถุนายน",
+    "กรกฎาคม",
+    "สิงหาคม",
+    "กันยายน",
+    "ตุลาคม",
+    "พฤศจิกายน",
+    "ธันวาคม",
+  ];
   console.log(trackNumber);
   return (
     <>
@@ -34,12 +48,13 @@ function OrderNumber() {
         <Box p={5} shadow="lg" borderWidth="2px">
           <Box m={3} textAlign="center">
             <Box fontSize="20">
-              Order เลขที่: {trackNumber.orderTracking}{" "}
+              Order เลขที่: {trackNumber.id}{" "}
               <Box>ส่วนลด {trackNumber.discount * 100} %</Box>
             </Box>
             <Box>
-              วันที่: {orderDate.getDate()} เดือน: {orderDate.getMonth()} ปีคศ:{" "}
-              {orderDate.getFullYear()}
+              วันที่: {orderDate.getDate()} เดือน:{" "}
+              {monthNames[orderDate.getMonth()]} ปีพ.ศ.{" "}
+              {orderDate.getFullYear() + 543}
             </Box>
             <Box>
               เวลา: {orderDate.getHours()}:{orderDate.getMinutes()}

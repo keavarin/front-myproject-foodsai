@@ -18,10 +18,6 @@ function OrderNumberPage() {
         <OrderNumber />
         {/* <OrderTracking /> */}
       </Flex>
-
-      {/* <Stack align="center">
-            <Button colorScheme="red" size="lg">สั่งเลย</Button>
-          </Stack> */}
     </>
   );
 }

@@ -58,14 +58,17 @@ function OrderTracking() {
   const { orderTrackData, setOrderTrackData, orders } = useContext(
     OrderContext
   );
-  const { role } = useContext(AuthContext);
   const history = useHistory();
+  const { auth } = useContext(AuthContext);
+  const isAdmin = auth?.role === "admin";
+
   console.log(error);
   console.log(orders);
-  console.log(role);
+
   console.log(orderTrack);
   console.log(orderTrackData);
   console.log(orderTrackData.orderTracking);
+  console.log(orderTrackData.id);
   const validateInput = () => {
     const newError = {};
 
@@ -117,6 +120,7 @@ function OrderTracking() {
         console.log(res.data.order);
         if (res.data.order === null) setShow(false);
         if (res.data.order !== null) setShow(true);
+        alert("cancel order success");
       })
       .catch((err) => {
         if (err.response) {
@@ -135,9 +139,6 @@ function OrderTracking() {
       })
       .then((res) => {
         console.log(res.data);
-        // history.push("/findorder");
-        // if (res.data.order === null) setShow(false);
-        // if (res.data.order !== null) setShow(true);
       })
       .catch((err) => {
         if (err.response) {
@@ -156,6 +157,8 @@ function OrderTracking() {
       })
       .then((res) => {
         console.log(res.data);
+        alert("update status success");
+        history.push("/findorder");
         // history.push("/findorder");
         // if (res.data.order === null) setShow(false);
         // if (res.data.order !== null) setShow(true);
@@ -177,6 +180,8 @@ function OrderTracking() {
       })
       .then((res) => {
         console.log(res.data);
+        alert("update status success");
+        history.push("/findorder");
         // history.push("/findorder");
         // if (res.data.order === null) setShow(false);
         // if (res.data.order !== null) setShow(true);
@@ -198,6 +203,8 @@ function OrderTracking() {
       })
       .then((res) => {
         console.log(res.data.order);
+        alert("update status success");
+        history.push("/findorder");
         // history.push("/findorder");
         // if (res.data.order === null) setShow(false);
         // if (res.data.order !== null) setShow(true);
@@ -220,6 +227,9 @@ function OrderTracking() {
       .then((res) => {
         console.log(res);
         handlerConfirmOrder(e);
+        alert("update status success");
+        history.push("/findorder");
+
         // history.push("/findorder");
         // if (res.data.order === null) setShow(false);
         // if (res.data.order !== null) setShow(true);
@@ -289,9 +299,7 @@ function OrderTracking() {
               m={5}
               background-color="red"
             >
-              <Box textAlign="center">
-                Orderเลขที่: {orderTrackData.orderTracking}
-              </Box>
+              <Box textAlign="center">Orderเลขที่: {orderTrackData.id}</Box>
               <Box>
                 Khun. {orderTrackData.Customer.firstName} เบอร์โทร.
                 {orderTrackData.phoneNumberToOrder}
@@ -314,7 +322,7 @@ function OrderTracking() {
         cancelOrder={cancelOrder}
         handlerCancelOrder={handlerCancelOrder}
       />
-      {role === "admin" ? (
+      {isAdmin && (
         <>
           {/* <Button onClick={(e) => handlerConfirmOrder(e)}>
             update order confirm
@@ -334,7 +342,7 @@ function OrderTracking() {
             </Button>
           ) : null}
         </>
-      ) : null}
+      )}
     </>
   );
 }
