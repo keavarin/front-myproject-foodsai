@@ -52,7 +52,7 @@ function Banner() {
                 handlerGetCoupon(e);
                 setCount(count + 1);
               }}
-              src="https://res.cloudinary.com/dux0yt3qn/image/upload/v1619422595/myProjectFood/BannerFOODSAI/Red_and_Yellow_Barbecue___Grill_Restaurant_Deals___Promo_and_Deliveries_Food_Instagram_Post_1_ax6ocf.jpg"
+              src="https://res.cloudinary.com/dux0yt3qn/image/upload/v1620368531/myProjectFood/BannerFOODSAI/Red_and_Yellow_Barbecue_Grill_Restaurant_Deals_Promo_and_Deliveries_Food_Instagram_Post_uv6abr.png"
             />
           </div>
         )}

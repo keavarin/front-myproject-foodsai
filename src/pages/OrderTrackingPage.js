@@ -6,7 +6,7 @@ function OrderTrackingPage() {
     <>
       <Navbar />
       <Flex direction="column" alignItems="center">
-        <Box fontSize="18">ค้นหา order ที่นี่ </Box>
+        <Box fontSize="25">ค้นหา order ที่นี่ </Box>
 
         <OrderTracking />
       </Flex>

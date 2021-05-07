@@ -24,6 +24,7 @@ import {
   GridItem,
   Grid,
   Badge,
+  Flex,
 } from "@chakra-ui/react";
 
 const CustomModal = ({
@@ -142,9 +143,9 @@ function OrderSummaryPage() {
     setCoupon,
   } = useContext(OrderContext);
 
-  console.log(coupon);
-  console.log(coupon.status);
-  console.log(coupon.code);
+  // console.log(coupon);
+  // console.log(coupon.status);
+  // console.log(coupon.code);
 
   const history = useHistory();
 
@@ -158,8 +159,10 @@ function OrderSummaryPage() {
   for (let order of arrOrder) {
     item.push({ productId: order.id, amount: order.amount });
   }
-
-  const totalPrice = orders.reduce((total, order) => {
+  console.log(orders);
+  console.log(couponCode);
+  console.log(coupon.code);
+  let totalPrice = orders.reduce((total, order) => {
     if (order.discount === undefined || order.discount === null)
       return total + order.price * order.amount;
     if (coupon.code === couponCode)
@@ -191,6 +194,8 @@ function OrderSummaryPage() {
   const [paymentCustomerType, setPaymentCustomerType] = useState({
     paymentType: "",
   });
+  console.log(paymentCustomerType);
+  console.log("or_id", or_id);
 
   const validateInput = () => {
     const {
@@ -248,8 +253,8 @@ function OrderSummaryPage() {
     axios
       .post("/order/", {
         status,
-        discount: couponCode === coupon.code ? coupon.discount : 0,
-        couponId: couponCode === coupon.code ? coupon.id : null,
+        discount: couponCode === coupon?.code ? coupon?.discount : 0,
+        couponId: couponCode === coupon?.code ? coupon?.id : null,
         phoneNumberToOrder,
         houseNumberToOrder,
         roadToOrder,
@@ -304,131 +309,119 @@ function OrderSummaryPage() {
     onOpen();
   }
   return (
-    <Grid
-      h="200px"
-      templateRows="repeat(5, 1fr)"
-      templateColumns="repeat(6, 1fr)"
-      gap={4}
-    >
-      <GridItem rowSpan={1} colSpan={6}>
-        <Navbar />
-      </GridItem>
-
-      <GridItem rowSpan={2} colSpan={6}>
+    <>
+      <Navbar />
+      <Flex direction="column" alignItems="center">
         <Box align="center" fontSize="25">
           ชำระรายการสินค้า
         </Box>
-      </GridItem>
 
-      <GridItem rowSpan={2} colSpan={6}>
-        <Box align="center" fontSize="18">
-          สรุปรายการทั้งหมด
-          <Box>{orders.length} รายการ ราคาทั้งหมด:</Box>
-          {orders.map((order) => (
-            <>
-              {coupon.code === couponCode ? (
-                <>
-                  <Text as="s">{order.amount * order.price} บาท</Text>
+        <Box p={5} shadow="lg" borderWidth="2px">
+          <Box align="center" fontSize="18">
+            สรุปรายการทั้งหมด
+            <Box>
+              {orders.length} รายการ ราคาทั้งหมด:
+              {coupon?.code === couponCode ? (
+                <Text as="s">
+                  {totalPrice} บาท
                   <Badge colorScheme="red" fontSize="18">
-                    {(
-                      order.amount *
-                      order.price *
-                      (1 - coupon.discount)
-                    ).toFixed(2)}
+                    {totalPrice * (1 - coupon.discount)}
                     บาท
                   </Badge>
-                </>
+                </Text>
               ) : (
-                order.amount * order.price
+                <Text>{totalPrice} บาท</Text>
               )}
-
-              <Box>
+            </Box>
+            {orders.map((order) => (
+              <Text>
                 {order.amount} X {order.name} ราคา
-                {totalPrice} บาท
-              </Box>
-            </>
-          ))}
-          <Box>
-            Coupon Discount:
-            <Input
-              type="text"
-              w={200}
-              placeholder="Enter Coupon"
-              name="code"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value)}
-            />
-            {couponCode === coupon.code && coupon.status === "TRUE" ? (
-              <Text color="green">correct !</Text>
-            ) : (
-              <Text color="red">invalid code</Text>
-            )}
-          </Box>
-          <Box alignItems="center">
-            <Button
-              colorScheme="yellow"
-              size="md"
-              onClick={() => {
-                handleOpenModal(customerOrderDataModal);
-              }}
-            >
-              CONFIRM ORDER
-            </Button>
-            <Button
-              colorScheme="red"
-              size="md"
-              onClick={() => history.push("/order")}
-            >
-              CANCEL
-            </Button>
-            {show && (
-              <Box>
-                <Box>Payment:</Box>
-                <RadioGroup onChange={setValue} value={value}>
-                  <Stack
-                    alignItems="center"
-                    justifyContent="center"
-                    direction="row"
-                  >
-                    <Radio
-                      name="paymentType"
-                      value="CASH"
-                      colorScheme="red"
-                      onChange={handlePaymentCustomerTypeChange}
+                {order.amount * order.price} บาท
+              </Text>
+            ))}
+            <Box>
+              Coupon Discount:
+              <Input
+                type="text"
+                w={200}
+                placeholder="Enter Coupon"
+                name="code"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+              />
+              {couponCode === coupon?.code && coupon?.status === "TRUE" ? (
+                <Text color="green">correct !</Text>
+              ) : (
+                <Text color="red">invalid code</Text>
+              )}
+            </Box>
+            <Box alignItems="center">
+              <Button
+                colorScheme="yellow"
+                size="md"
+                onClick={() => {
+                  handleOpenModal(customerOrderDataModal);
+                }}
+              >
+                CONFIRM ORDER
+              </Button>
+              <Button
+                colorScheme="red"
+                size="md"
+                onClick={() => history.push("/order")}
+              >
+                CANCEL
+              </Button>
+              {show && (
+                <Box>
+                  <Box>Payment:</Box>
+                  <RadioGroup onChange={setValue} value={value}>
+                    <Stack
+                      alignItems="center"
+                      justifyContent="center"
+                      direction="row"
                     >
-                      เงินสด
-                    </Radio>
+                      <Radio
+                        name="paymentType"
+                        value="CASH"
+                        colorScheme="red"
+                        onChange={handlePaymentCustomerTypeChange}
+                      >
+                        เงินสด
+                      </Radio>
 
-                    <Radio
-                      name="paymentType"
-                      value="CREDIT"
-                      colorScheme="red"
-                      onChange={handlePaymentCustomerTypeChange}
-                      onClick={() => handleOpenModal(paymentDataModal)}
-                    >
-                      บัตรเครดิต
-                    </Radio>
-                  </Stack>
-                </RadioGroup>
-                <Button
-                  colorScheme="red"
-                  size="md"
-                  onClick={handlerSubmitPaymentData}
-                >
-                  ใช่
-                </Button>
-                <Button
-                  colorScheme="blackAlpha"
-                  size="md"
-                  onClick={() => history.push("/order")}
-                >
-                  ไม่ใช่
-                </Button>
-              </Box>
-            )}
+                      <Radio
+                        name="paymentType"
+                        value="CREDIT"
+                        colorScheme="red"
+                        onChange={handlePaymentCustomerTypeChange}
+                        onClick={() => handleOpenModal(paymentDataModal)}
+                      >
+                        บัตรเครดิต
+                      </Radio>
+                    </Stack>
+                  </RadioGroup>
+                  <Button
+                    colorScheme="red"
+                    size="md"
+                    onClick={handlerSubmitPaymentData}
+                  >
+                    ใช่
+                  </Button>
+                  <Button
+                    colorScheme="blackAlpha"
+                    size="md"
+                    onClick={() => history.push("/order")}
+                  >
+                    ไม่ใช่
+                  </Button>
+                </Box>
+              )}
+            </Box>
           </Box>
         </Box>
-      </GridItem>
+      </Flex>
+
       <CustomModal
         customerOrderDataModal={customerOrderDataModal}
         modalHeader="จัดส่งที่"
@@ -450,7 +443,7 @@ function OrderSummaryPage() {
         paymentCustomerType={paymentCustomerType}
         setPaymentCustomerType={setPaymentCustomerType}
       />
-    </Grid>
+    </>
   );
 }
 
