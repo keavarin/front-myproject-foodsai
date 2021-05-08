@@ -11,6 +11,8 @@ function CreateProduct() {
   const [price, setPrice] = useState("");
   const [status, setStatus] = useState("");
   const [file, setFile] = useState(null);
+  const [code, setCode] = useState("");
+  const [discount, setDiscount] = useState("");
   const [productImg, setProductImg] = useState("");
   const [error, setError] = useState({});
 
@@ -42,6 +44,26 @@ function CreateProduct() {
         }
       });
   };
+  const handlerSubmitCreateCoupon = (e) => {
+    e.preventDefault();
+    axios
+      .post(`/coupon/createcoupon`, {
+        code,
+        discount,
+      })
+      .then((res) => {
+        console.log(res.data.coupon);
+        alert("create success");
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError({ server: err.response.data.message });
+        } else {
+          console.error(err.message);
+          setError({ front: err.message });
+        }
+      });
+  };
   return (
     <>
       {" "}
@@ -51,36 +73,56 @@ function CreateProduct() {
         w={500}
         justifyContent="center"
       >
-        <FormControl>
-          <Input
-            placeholder="name"
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            placeholder="status"
-            name="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          />
+        <Box p={5} shadow="lg" borderWidth="2px">
+          <Box>Create Product</Box>
+          <FormControl>
+            <Input
+              placeholder="name"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <Input
+              placeholder="status"
+              name="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            />
 
-          <Input
-            placeholder="price"
-            name="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
+            <Input
+              placeholder="price"
+              name="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
 
+            <Input
+              placeholder="imgUrl"
+              name="imgUrl"
+              type="file"
+              onChange={handleFileChange}
+            />
+            <Button onClick={(e) => handlerSubmitCreateProduct(e)}>
+              SUBMIT
+            </Button>
+          </FormControl>
+        </Box>
+        <Box p={5} shadow="lg" borderWidth="2px" mt={10}>
+          <Box>Create Coupon </Box>
           <Input
-            placeholder="imgUrl"
-            name="imgUrl"
-            type="file"
-            onChange={handleFileChange}
+            placeholder="code"
+            name="code"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
           />
-          <Button onClick={(e) => handlerSubmitCreateProduct(e)}>SUBMIT</Button>
-        </FormControl>
-        {/* {productImg && <Image src="productImg" />} */}
+          <Input
+            placeholder="discount"
+            name="discount"
+            value={discount}
+            onChange={(e) => setDiscount(e.target.value)}
+          />
+          <Button onClick={(e) => handlerSubmitCreateCoupon(e)}>SUBMIT</Button>
+        </Box>
       </Flex>
     </>
   );

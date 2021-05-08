@@ -322,27 +322,25 @@ function OrderTracking() {
         cancelOrder={cancelOrder}
         handlerCancelOrder={handlerCancelOrder}
       />
-      {isAdmin && (
-        <>
-          {/* <Button onClick={(e) => handlerConfirmOrder(e)}>
-            update order confirm
-          </Button> */}
-          <Button onClick={(e) => handlerOnProcessOrder(e)}>
-            update order on process
-          </Button>
-          <Button onClick={(e) => handlerOnDeliveryOrder(e)}>
-            update order delivery
-          </Button>
-          <Button onClick={(e) => handlerArriveOrder(e)}>
-            update order arrive
-          </Button>
-          {orderTrackData.status === "ORDERPLACE" ? (
-            <Button onClick={(e) => handlerUpdatePayment(e)}>
-              update payment TRUE
+      {isAdmin &&
+        (orderTrackData.status === "ORDERCANCEL" ? null : (
+          <>
+            <Button onClick={(e) => handlerOnProcessOrder(e)}>
+              update order on process
             </Button>
-          ) : null}
-        </>
-      )}
+            <Button onClick={(e) => handlerOnDeliveryOrder(e)}>
+              update order delivery
+            </Button>
+            <Button onClick={(e) => handlerArriveOrder(e)}>
+              update order arrive
+            </Button>
+            {orderTrackData.status === "ORDERPLACE" ? (
+              <Button onClick={(e) => handlerUpdatePayment(e)}>
+                update payment TRUE
+              </Button>
+            ) : null}
+          </>
+        ))}
     </>
   );
 }

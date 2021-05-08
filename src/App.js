@@ -10,6 +10,7 @@ import OrderSummaryPage from "./pages/OrderSummaryPage";
 import OrderNumberPage from "./pages/OrderNumberPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminCreateProductPage from "./pages/AdminCreateProductPage";
+import AdminFindAllOrder from "./pages/AdminFindAllOrder";
 import { OrderContext } from "./contexts/OrderContextProvider";
 
 const privateRoutes = [
@@ -27,10 +28,10 @@ const privateRoutes = [
   },
 ];
 const adminRoutes = [
-  // {
-  //   path: "/admin/ordersummary",
-  //   component: OrderSummaryPage,
-  // },
+  {
+    path: "/findallorder",
+    component: AdminFindAllOrder,
+  },
   {
     path: "/findorder",
     component: OrderTrackingPage,

@@ -320,7 +320,7 @@ function OrderSummaryPage() {
                 <Text as="s">
                   {totalPrice} บาท
                   <Badge colorScheme="red" fontSize="18">
-                    {totalPrice * (1 - coupon.discount)}
+                    {(totalPrice * (1 - coupon.discount)).toFixed(2)}
                     บาท
                   </Badge>
                 </Text>

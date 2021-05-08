@@ -1,15 +1,19 @@
 import Navbar from "../components/layout/Navbar";
-import CreateProduct from "../components/layout/CreateProduct";
+import FindAllOrder from "../components/layout/FindAllOrdere";
 import { Box, Flex, Image } from "@chakra-ui/react";
-function AdminCreateProductPage() {
+
+function AdminFindAllOrder() {
   return (
     <>
       <Navbar />
       <Flex direction="column" alignItems="center" mt={10}>
-        <CreateProduct />
+        <Box>
+          find all orders
+          <FindAllOrder />
+        </Box>
       </Flex>
     </>
   );
 }
 
-export default AdminCreateProductPage;
+export default AdminFindAllOrder;

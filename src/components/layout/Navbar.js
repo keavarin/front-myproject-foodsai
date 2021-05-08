@@ -236,6 +236,7 @@ function Navbar() {
       })
       .then((res) => {
         history.push("/order");
+        alert("update data success");
       })
       .catch((err) => {
         if (err.response) {
@@ -309,6 +310,7 @@ function Navbar() {
       })
       .then((res) => {
         history.push("/order");
+        alert("password was changed");
       })
       .catch((err) => {
         if (err.response) {
@@ -363,6 +365,14 @@ function Navbar() {
               <MenuItem onClick={() => history.push("/findorder")}>
                 Find Order
               </MenuItem>
+              <MenuItem onClick={() => history.push("/order")}>
+                Update Product
+              </MenuItem>
+
+              <MenuItem onClick={() => history.push("/findallorder")}>
+                Find All Order
+              </MenuItem>
+
               <MenuItem
                 onClick={() => {
                   history.push("/admincreateproduct");

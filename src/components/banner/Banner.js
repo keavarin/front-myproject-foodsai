@@ -21,7 +21,7 @@ function Banner() {
   const handlerGetCoupon = async (e) => {
     e.preventDefault();
     axios
-      .get("/coupon/createcoupon")
+      .get("/coupon/")
       .then((res) => {
         setCoupon(res.data.coupon);
         setShow(true);

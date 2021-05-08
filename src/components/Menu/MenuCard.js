@@ -15,6 +15,7 @@ import {
   NumberDecrementStepper,
   Grid,
   Input,
+  FormControl,
 } from "@chakra-ui/react";
 
 function SliderInput({ value, setValue }) {
@@ -47,7 +48,9 @@ function MenuCard({ menu }) {
   const [error, setError] = useState({});
   const [file, setFile] = useState(null);
   const [updatePrice, setUpdatePrice] = useState("");
+  const [updateStatus, setUpdateStatus] = useState("");
   const history = useHistory();
+  console.log(menu);
 
   const handleFileChange = (e) => {
     console.log(e);
@@ -57,11 +60,10 @@ function MenuCard({ menu }) {
     e.preventDefault();
     const { id } = menu;
     const formData = new FormData();
-
-    formData.append("imgUrl", file);
+    formData.append("imgUrl", file ? file : menu.imgUrl);
 
     axios
-      .put(`/product/updateproduct/${id}`, formData)
+      .put(`/product/updateproductimg/${id}`, formData)
       .then((res) => {
         console.log(res.data.product);
         alert("update success");
@@ -144,6 +146,18 @@ function MenuCard({ menu }) {
 
         {auth?.role === "admin" ? (
           <>
+            <FormControl>
+              <Input
+                placeholder="imgUrl"
+                name="imgUrl"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <Button onClick={(e) => handlerMenuUpdatePicture(e)}>
+                summit
+              </Button>
+            </FormControl>
+
             <Input
               placeholder="update price"
               name="price"
@@ -152,27 +166,16 @@ function MenuCard({ menu }) {
                 setUpdatePrice(e.target.value);
               }}
             ></Input>
-            <Input
-              placeholder="imgUrl"
-              name="imgUrl"
-              type="file"
-              onChange={handleFileChange}
-            />
-            <Button onClick={(e) => handlerMenuUpdatePicture(e)}>
-              Update Picture
+            <Button onClick={(e) => handlerMenuUpdateNonActive(e)}>
+              Update Product Status NONACTIVE
             </Button>
-            <div>
-              <Button onClick={(e) => handlerMenuUpdateNonActive(e)}>
-                Update Product Status NONACTIVE
-              </Button>
 
-              <Button onClick={(e) => handlerMenuUpdateActive(e)}>
-                Update Product Status ACTIVE
-              </Button>
-              <Button onClick={() => history.push("/findorder")}>
+            <Button onClick={(e) => handlerMenuUpdateActive(e)}>
+              Update Product Status ACTIVE
+            </Button>
+            {/* <Button onClick={() => history.push("/findorder")}>
                 go to update status order
-              </Button>
-            </div>
+              </Button> */}
           </>
         ) : (
           <>
