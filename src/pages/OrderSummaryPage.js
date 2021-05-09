@@ -35,6 +35,7 @@ const CustomModal = ({
   handlerSubmitCustomerData,
   validateInput,
   setShow,
+  error,
 }) => {
   const { isOpen, onClose } = customerOrderDataModal;
   const initialRef = React.useRef();
@@ -60,6 +61,7 @@ const CustomModal = ({
               </FormControl>
             </ModalBody>
           ))}
+          {error.server && <Box color={"red"}>{error.server}</Box>}
 
           <ModalFooter>
             <Button
@@ -425,6 +427,7 @@ function OrderSummaryPage() {
         handlerSubmitCustomerData={handlerSubmitCustomerData}
         validateInput={validateInput}
         setShow={setShow}
+        error={error}
       />
       <PaymentModal
         modalHeader="ชำระผ่านบัตร"
