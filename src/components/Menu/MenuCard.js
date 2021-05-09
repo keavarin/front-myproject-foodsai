@@ -77,8 +77,8 @@ function MenuCard({ menu }) {
       });
   };
 
-  console.log(menu);
-  console.log(updatePrice);
+  // console.log(menu);
+  // console.log(updatePrice);
 
   const onAddMenu = (menu) => {
     const index = orders.findIndex((order) => order.id === menu.id);
@@ -136,7 +136,13 @@ function MenuCard({ menu }) {
   };
   return (
     <Grid templateColumns="repeat(1, 1fr)" gap={2} key={menu.id}>
-      <Box p={1} shadow="sm" borderWidth="1px">
+      <Box
+        m={3}
+        p={1}
+        shadow="sm"
+        borderWidth="1px"
+        borderColor="blackAlpha.400"
+      >
         <Image w="100%" h="300" objectFit="cover" src={menu.imgUrl} />
 
         <Box textAlign="center" mt={5}>
@@ -178,14 +184,14 @@ function MenuCard({ menu }) {
               </Button> */}
           </>
         ) : (
-          <>
+          <Flex justifyContent="center">
             <Button
               onClick={() => onAddMenu({ ...menu, amount: value })}
               disabled={value <= 0}
             >
               {menu.price} บาท
             </Button>
-          </>
+          </Flex>
         )}
       </Box>
     </Grid>

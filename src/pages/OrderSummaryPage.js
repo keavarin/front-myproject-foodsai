@@ -57,7 +57,6 @@ const CustomModal = ({
                   value={value}
                   onChange={handleCustomerOrderChange}
                 />
-                {/* <validateInput customerOrderData={key} /> */}
               </FormControl>
             </ModalBody>
           ))}

@@ -7,13 +7,13 @@ export const AuthContext = createContext();
 function AuthContextProvider({ children }) {
   //   const [isAuthenticated, setIsAuthenticated] = useState(
   //     localStorageService.getToken()
-  //   );
-  const [isAdmin, setIsAdmin] = useState();
+  // //   );
+  // const [isAdmin, setIsAdmin] = useState();
   const [auth, setAuth] = useState(decodeToken());
-  const [role, setRole] = useState("");
-  const [user, setUser] = useState({});
-  const [admin, setAdmin] = useState({});
-  // console.log(`isAdmin`, auth);
+  // const [role, setRole] = useState("");
+  // const [user, setUser] = useState({});
+  // const [admin, setAdmin] = useState({});
+  // // console.log(`isAdmin`, auth);
 
   function decodeToken() {
     try {

@@ -23,7 +23,6 @@ function FindAllOrder() {
   const indexOfLastOrder = currentPage * orderPerPage;
   const indexOfFirstOrder = indexOfLastOrder - orderPerPage;
   const currentOrder = allOrder.slice(indexOfFirstOrder, indexOfLastOrder);
-  const totalOrder = allOrder.length;
 
   let pageNumbers = [];
   for (let i = 1; i <= Math.ceil(allOrder.length / orderPerPage); i++) {
@@ -37,7 +36,6 @@ function FindAllOrder() {
       <Table size="sm">
         <Thead>
           <Tr>
-            <Th>Date</Th>
             <Th>Order number</Th>
             <Th>STATUS</Th>
             <Th>PhoneNumber</Th>
@@ -47,7 +45,6 @@ function FindAllOrder() {
         <Tbody>
           {currentOrder.map((order) => (
             <Tr>
-              <Td>{order.date}</Td>
               <Td>{order.id}</Td>
               <Td>{order.status}</Td>
               <Td>{order.phoneNumberToOrder}</Td>

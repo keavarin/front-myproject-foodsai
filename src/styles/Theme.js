@@ -1,5 +1,4 @@
 import { extendTheme } from "@chakra-ui/react";
-// import Button from "./Button";
 
 //สร้าง config โดยสร้าง themeขึ้นมา
 export const theme = extendTheme({
